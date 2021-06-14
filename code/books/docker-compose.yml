@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+    web:
+        build: .
+        command: python /code/manage.py runserver 0.0.0.0:8000
+        environment: 
+            - SECRET_KEY=your secret key
+            - DEBUG=True
+            - STRIPE_TEST_PUBLISHABLE_KEY=your stripe publicshable key
+            - STRIPE_TEST_SECRET_KEY=your stripe test secret key
+        volumes:
+            - .:/code
+        ports:
+            - 8000:8000
+        depends_on: 
+            - db
+    db:
+        image: postgres:12
+        volumes:
+            - postgres_data:/var/lib/postgresql/data/
+        environment: 
+            - "POSTGRES_HOST_AUTH_METHOD=trust"
+
+volumes:
+    postgres_data:
